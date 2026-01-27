@@ -1,3 +1,4 @@
+/* Title styling */
 .title {
     height: 40px;
     width: 500px;
@@ -7,6 +8,7 @@
     text-align: center;
 }
 
+/* Body styling */
 .body {
     height: 100%;
     display: flex;
