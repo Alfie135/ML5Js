@@ -12,13 +12,13 @@ This example uses p5 preload function to create the classifier
 // Classifier Variable
 let classifier;
 // Model URL
-let imageModelURL = 'https://teachablemachine.withgoogle.com/models/1pE8pCTJr/';
-
+let imageModelURL = './tm-my-image-model/';
 // Video
 let video;
 let flippedVideo;
 // To store the classification
 let label = "";
+let confidence = 0;
 
 // Load the model first
 function preload() {
@@ -45,9 +45,9 @@ function draw() {
   // Draw the label
   fill(255);
   textAlign(CENTER);
-  text(label, width / 2, height - 4);
   noStroke();
   textSize(24);
+  text(label + ' ' + ((confidence || 0) * 100).toFixed(1) + '%', width / 2, height - 4);
 }
 
 // Get a prediction for the current video frame
@@ -66,6 +66,7 @@ function gotResult(error, results) {
   // The results are in an array ordered by confidence.
   console.log(results[0]);
   label = results[0].label;
+  confidence = results[0].confidence;
   // Classifiy again!
   classifyVideo();
 }
