@@ -1,66 +1,71 @@
-// Copyright (c) 2020 ml5
+// Copyright (c) 2019 ml5
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
 /* ===
 ml5 Example
-Object Detection using COCOSSD
-This example uses a callback pattern to create the classifier
+Webcam Image Classification using a pre-trained customized model and p5.js
+This example uses p5 preload function to create the classifier
 === */
 
-let video;
-let detector;
-let detections = [];
+// Classifier Variable
+let classifier;
+// Model URL
+let imageModelURL = 'https://teachablemachine.withgoogle.com/models/1pE8pCTJr/';
 
-// Setup function to initialize video and object detector
+// Video
+let video;
+let flippedVideo;
+// To store the classification
+let label = "";
+
+// Load the model first
+function preload() {
+  classifier = ml5.imageClassifier(imageModelURL + 'model.json');
+}
+
 function setup() {
   createCanvas(640, 480);
-  video = createCapture(VIDEO, videoReady);
+  // Create the video
+  video = createCapture(VIDEO);
   video.size(640, 480);
   video.hide();
-}
 
-function videoReady() {
-  // Models available are 'cocossd', 'yolo'
-  detector = ml5.objectDetector('cocossd', modelReady);
-}
-
-// When we get a detection, draw it to the canvas
-function gotDetections(error, results) {
-  if (error) {
-    console.error(error);
-  }
-  detections = results;
-  setTimeout(() => detector.detect(video, gotDetections), 50);
-}
-
-// When the model is ready, start detecting
-function modelReady() {
-  detector.detect(video, gotDetections);
+  flippedVideo = ml5.flipImage(video)
+  // Start classifying
+  classifyVideo();
 }
 
 function draw() {
-  // Loop runs repeatedly to draw the video and detections
-  image(video, 0, 0);
+  background(0);
+  // Draw the video
+  image(flippedVideo, 0, 0);
 
-  for (let i = 0; i < detections.length; i += 1) {
+  // Draw the label
+  fill(255);
+  textAlign(CENTER);
+  text(label, width / 2, height - 4);
+  noStroke();
+  textSize(24);
+}
 
-    const object = detections[i];
-    const conf = object.confidence ?? object.score;
-    const percent = conf != null ? Math.round(conf * 100) + '%' : '';
-    const label = object.label + (percent ? ' ' + percent : '');
+// Get a prediction for the current video frame
+function classifyVideo() {
+  flippedVideo = ml5.flipImage(video)
+  classifier.classify(flippedVideo, gotResult);
+}
 
-    
-    // Draw bounding box and label
-    stroke(0, 255, 0);
-    strokeWeight(4);
-    noFill();
-    rect(object.x, object.y, object.width, object.height);
-
-    noStroke();
-    fill(255);
-    textSize(24);
-    text(label, object.x + 10, object.y + 24);
+// When we get a result
+function gotResult(error, results) {
+  // If there is an error
+  if (error) {
+    console.error(error);
+    return;
   }
+  // The results are in an array ordered by confidence.
+  console.log(results[0]);
+  label = results[0].label;
+  // Classifiy again!
+  classifyVideo();
 }
