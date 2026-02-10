@@ -6,6 +6,7 @@ All you need to get started is to have a webcam, launch an instance. Once the mo
 
 1. Launch an instance and make sure you have a webcam.
 2. Wait for the model to load, and it will begin to automatically identify items.
+3. It will play one of 4 drum sounds depending on which one item out of 4 sound groups it detects.
 
 ## Functions and what they do
 - preload()
