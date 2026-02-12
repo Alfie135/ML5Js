@@ -23,11 +23,9 @@ All you need to get started is to have a webcam, launch an instance. Once the mo
 ## Project structure
 - index.html — minimal page that loads p5.js, ml5.js and sketch.js, plus links to CSS/controls.
 - sketch.js — main p5 sketch: sets up the webcam, loads the ml5 model, runs classification and draws results to the canvas.
-- sketchold.js — older/object-detection example kept for reference (COCO-SSD / Teachable Machine style).
 - tm-my-image-model/ — exported model files (model.json, weights, metadata) used by ml5.imageClassifier or objectDetector.
 - assets/ (optional) — images, icons or other static resources.
 - README.md — this file with usage notes and function descriptions.
-- .gitignore / package.json (optional) — tooling and dependencies if present.
 
 
 

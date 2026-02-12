@@ -10,6 +10,7 @@ let flippedVideo;
 let label = "";
 let confidence = 0;
 
+// Sound variables
 const shoePlayer = new Audio('./audio/crashCymbal.wav');
 const Plugsocket = new Audio('./audio/crashCymbal.wav');
 const Webcam = new Audio('./audio/crashCymbal.wav');
@@ -74,6 +75,7 @@ function gotResult(error, results) {
   console.log(results[0]);
   label = results[0].label;
   
+  // Play the corresponding sound based on the label
   if (label === 'Shoe (Converse)' && !shoePlayer.playing) {
     shoePlayer.play();
   }
@@ -123,6 +125,6 @@ function gotResult(error, results) {
     Watch.play();
   }
   confidence = results[0].confidence;
-  // Classifiy again!
+  // Classifiy again
   classifyVideo();
 }
